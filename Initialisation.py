@@ -4,13 +4,13 @@ from Exceptions import PopulationSizeException, TravellingSalesMatrixException
 from Individual import Individual
 from Population import Population
 
-class Initilisation():
+class Initialisation():
 
     _matrix: np.ndarray = np.ndarray()
     _population_size: int = -1
     _number_of_cities: int = -1
 
-    def __init__(self, matrix: np.ndarray, population_size: int ) -> None:
+    def __init__(self, matrix: np.ndarray, population_size: int) -> None:
         if len(matrix.size) != 2 or matrix.size[0] != matrix.size[1] : raise TravellingSalesMatrixException(f"The matrix is invalid is invalid, input size:{matrix.size}")
         self._matrix = matrix #exposure since only read object
         

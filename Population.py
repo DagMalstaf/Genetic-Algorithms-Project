@@ -5,8 +5,8 @@ class Population():
 
     _population: List[Individual] = list()
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, population: List[Individual]) -> None:
+        self._population = population
 
     @staticmethod
     def recombination(inididual1: Individual, indvidual2: Individual) -> List[Individual]:
@@ -16,7 +16,10 @@ class Population():
         return self._population
 
     def add_individual(self, individual: Individual) -> None:
-        pass
-
-    def remove_individual(self, inividual: Individual) -> None:
-        pass
+        self._population.append(individual)
+    
+    def add_individuals(self, individuals: List[Individual]) -> None:
+        self._population.extend(individuals)
+    
+    def remove_individual(self, individual: Individual) -> None:
+        self._population.remove(individual)

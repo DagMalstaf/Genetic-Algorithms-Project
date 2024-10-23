@@ -11,10 +11,14 @@ class Parameters():
         pass
 
 
-    def read_yaml(filename: str) -> None:
+    def read_yaml(self, filename: str) -> None:
         pass
 
     #gettters for parameters
+
+    def get_population_size(self) -> int:
+        # TODO
+        return 100
 
     
     

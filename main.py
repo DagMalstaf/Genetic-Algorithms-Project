@@ -1,5 +1,8 @@
 import Reporter
 import numpy as np
+from Initialisation import Initialisation
+from Parameters import Parameters
+from TravellingSalesMan import TravellingSalesMan
 
 # Modify the class name to match your student number.
 class r0799028:
@@ -14,14 +17,17 @@ class r0799028:
 		distanceMatrix = np.loadtxt(file, delimiter=",")
 		file.close()
 
-		# Your code here.
+		parameters = Parameters()
+
+		initialisation = Initialisation(distanceMatrix, parameters.get_population_size())
+		population = initialisation.get_initial_population()
+
+		tsm = TravellingSalesMan(distanceMatrix, parameters)
+
 		yourConvergenceTestsHere = True
 		while( yourConvergenceTestsHere ):
-			meanObjective = 0.0
-			bestObjective = 0.0
-			bestSolution = np.array([1,2,3,4,5])
-
-			# Your code here.
+			# float, float, np.array
+			meanObjective, bestObjective, bestSolution = tsm.run(population)
 
 			# Call the reporter with:
 			#  - the mean objective function value of the population
