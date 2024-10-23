@@ -11,3 +11,7 @@ class Population():
     @staticmethod
     def recombination(inididual1: Individual, indvidual2: Individual) -> List[Individual]:
         pass
+
+
+    def add_individual(self, individual: Individual) -> None:
+        pass
