@@ -1,6 +1,6 @@
 
 
-from typing import List, Double
+from typing import List, Double, Int
 from copy import deepcopy
 
 
@@ -18,6 +18,15 @@ class Individual():
         pass
 
     def __eq__(self, value: object) -> bool:
+        pass
+
+    def __gt__(self, value: object) -> bool:
+        pass
+
+    def use_cyclic_notation(self, cyclic_notation: List[Int]) -> None:
+        pass
+
+    def use_path_notation(self, cyclic_notation: List[Int]) -> None:
         pass
 
     def get_cyclic_representation(self) -> List[int]:

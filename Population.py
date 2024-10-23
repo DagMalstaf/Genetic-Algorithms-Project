@@ -17,3 +17,6 @@ class Population():
 
     def add_individual(self, individual: Individual) -> None:
         pass
+
+    def remove_individual(self, inividual: Individual) -> None:
+        pass

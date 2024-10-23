@@ -24,7 +24,7 @@ class Initilisation():
         population = Population()
         for _ in range(self._population_size):
             candidate_solution = np.random.choice(self._number_of_cities, size=self._number_of_cities, replace=False) # np.random.choice(self._number_of_cities, size=self._number_of_cities, replace=False, p=None)
-            
-            population.add_individual(Individual(candidate_solution))
+
+            population.add_individual(Individual().use_path_notation(candidate_solution))
 
         return population
