@@ -30,5 +30,7 @@ class Individual():
 
     #Iterator along route
 
+    #'Iterator' builder 
+
     
 

@@ -14,3 +14,6 @@ class Population():
 
     def get(self) -> List[Individual]:
         return self._population
+
+    def add_individual(self, individual: Individual) -> None:
+        pass
