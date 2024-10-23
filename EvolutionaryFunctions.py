@@ -12,7 +12,7 @@ class EvolutionaryFunctions():
         Get k random individuals from the population, then select one according to a selection_fuction.
         examples selection_function: min(), max()
         """
-        if k > population.get_size():
+        if k > population.get_population_size():
             raise Exception()
         sampled_individuals = sample(population.get(), k)
         individual = selection_function(sampled_individuals, key=lambda ind: ind.get_distance())

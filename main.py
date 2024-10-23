@@ -40,3 +40,7 @@ class r0799028:
 
 		# Your code here.
 		return 0
+
+if __name__ == "__main__":
+	student = r0799028()
+	student.optimize("tour50.csv")

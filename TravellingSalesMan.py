@@ -1,5 +1,5 @@
 import numpy as np
-from typing import float, Tuple
+from typing import Tuple
 from Parameters import Parameters
 from Population import Population
 from Variation import Variation
@@ -23,7 +23,7 @@ class TravellingSalesMan():
         amt_children = self.parameters.get_offspring_per_recombination()
         # mu/amt_children should be int
 
-        for _ in range(mu/amt_children):
+        for _ in range(int(mu/amt_children)):
             parent1, parent2 = self.selection.select_pair(population)
             offspring = self.variation.produce_offspring(parent1, parent2)
             population.add_individuals(offspring)
