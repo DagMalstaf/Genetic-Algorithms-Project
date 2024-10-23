@@ -1,4 +1,3 @@
-
 import numpy as np
 from typing import Set
 from Individual import Individual
@@ -44,4 +43,5 @@ class Variation():
         return child
 
     def mutation(self, individual: Individual) -> Individual:
-        return None
+        # TODO
+        return individual

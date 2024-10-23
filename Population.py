@@ -1,5 +1,5 @@
 from Individual import Individual
-from typing import List
+from typing import List, Iterable
 
 class Population():
 
@@ -18,8 +18,12 @@ class Population():
     def add_individual(self, individual: Individual) -> None:
         self._population.append(individual)
     
-    def add_individuals(self, individuals: List[Individual]) -> None:
+    def add_individuals(self, individuals: Iterable[Individual]) -> None:
         self._population.extend(individuals)
     
     def remove_individual(self, individual: Individual) -> None:
         self._population.remove(individual)
+    
+    def get_objective_values(self) -> List[float]:
+        return [individual.get_distance() for individual in self._population]
+

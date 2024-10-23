@@ -1,5 +1,3 @@
-
-
 from Population import Population
 from EvolutionaryFunctions import EvolutionaryFunctions
 
