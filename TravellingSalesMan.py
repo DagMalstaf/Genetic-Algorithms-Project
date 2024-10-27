@@ -26,12 +26,18 @@ class TravellingSalesMan():
         for _ in range(int(mu/amt_children)):
             parent1, parent2 = self.selection.select_pair(population)
             offspring = self.variation.produce_offspring(parent1, parent2)
-            population.add_individuals(offspring)
+            population.add_individuals(offspring, self.matrix)
         
         population = self.elimination.eliminate(population)
 
         objective_values = population.get_objective_values()
 
-        best_indvidual = population[0]
-        
-        return np.mean(objective_values), max(objective_values), best_indvidual
+        best_index = np.argmin(objective_values)
+        best_individual = population[best_index]
+        best_objective = objective_values[best_index]
+
+        return (
+            np.mean(objective_values),            
+            best_objective,                       
+            best_individual
+        )

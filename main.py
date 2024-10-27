@@ -21,6 +21,8 @@ class r0799028:
 
 		initialisation = Initialisation(distanceMatrix, parameters.get_population_size())
 		population = initialisation.get_initial_population()
+		for individual in population.get():
+			print(f"Route: {individual.get_cyclic_representation()}, Distance: {individual.get_distance()}")
 
 		tsm = TravellingSalesMan(distanceMatrix, parameters)
 
