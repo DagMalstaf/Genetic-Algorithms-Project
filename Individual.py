@@ -33,11 +33,11 @@ class Individual():
         return self._representation[index]
     
     def __hash__(self):
-        return hash(self._representation)
+        return hash(self._representation.data)
     
     @property
     def size(self) -> int:
-        return hash(self._representation.data)
+        return self._representation.size
     
 
     def __iter__(self):
