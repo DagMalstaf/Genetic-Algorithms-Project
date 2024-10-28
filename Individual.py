@@ -38,7 +38,6 @@ class Individual():
     def size(self) -> int:
         return self._representation.size
     
-
     def __iter__(self):
         return self
     
@@ -46,7 +45,6 @@ class Individual():
         tmp = self._representation[self._current_index]
         self._current_index = tmp
         return tmp
-
 
     def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
         self._representation = cyclic_notation
