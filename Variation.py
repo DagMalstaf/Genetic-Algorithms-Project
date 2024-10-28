@@ -4,8 +4,9 @@ from Individual import Individual
 
 class Variation():
     
-    def __init__(self, offspring_size: int) -> None:
+    def __init__(self, offspring_size: int, distanceMatrix: np.ndarray) -> None:
         self.offspring_size = offspring_size
+        self.distanceMatrix = distanceMatrix
 
     def produce_offspring(self, parent1: Individual, parent2: Individual) -> Set[Individual]:
         offspring_list = set()
@@ -39,7 +40,7 @@ class Variation():
    
 
         child = Individual()
-        child.use_cyclic_notation(child_repr)
+        child.use_cyclic_notation(child_repr, self.distanceMatrix)
         return child
 
     def mutation(self, individual: Individual) -> Individual:

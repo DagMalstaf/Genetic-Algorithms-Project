@@ -8,11 +8,12 @@ from Elimination import Elimination
 
 class TravellingSalesMan():
 
-    def __init__(self, parameters: Parameters) -> None:
+    def __init__(self, parameters: Parameters, distanceMatrix: np.ndarray) -> None:
         self.parameters = parameters
+        self.distanceMatrix = distanceMatrix
 
         self.selection = Selection(self.parameters.get_k_selection())
-        self.variation = Variation(self.parameters.get_offspring_size())
+        self.variation = Variation(self.parameters.get_offspring_size(), distanceMatrix)
         self.elimination = Elimination(self.parameters.get_k_elimination())
 
 

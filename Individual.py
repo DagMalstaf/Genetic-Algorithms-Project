@@ -1,9 +1,8 @@
 from typing import List
 from copy import deepcopy
 import numpy as np
-from Debug import Debug
 from Exceptions import CyclicNotationException
-from main import distanceMatrix
+from Debug import Debug
 
 class Individual():
     _representation : np.ndarray 
@@ -32,7 +31,8 @@ class Individual():
         return self._representation[index]
     
     def __hash__(self):
-        return hash(self._representation.data)
+
+        return hash(str(self._representation))
     
     @property
     def size(self) -> int:
@@ -46,13 +46,13 @@ class Individual():
         self._current_index = tmp
         return tmp
 
-    def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
+    def use_cyclic_notation(self, cyclic_notation: np.ndarray, distanceMatrix: np.ndarray) -> None:
         self._representation = cyclic_notation
-        self._calculate_distance()
+        self._calculate_distance(distanceMatrix)
 
-    def use_path_notation(self, path_notation: np.ndarray) -> None:
+    def use_path_notation(self, path_notation: np.ndarray, distanceMatrix: np.ndarray) -> None:
         self._build_cyclic_notation_from_path(path_notation)
-        self._calculate_distance()
+        self._calculate_distance(distanceMatrix)
 
     def _build_cyclic_notation_from_path(self, path_notation: np.ndarray) -> np.ndarray:
 
@@ -69,7 +69,7 @@ class Individual():
         return cyclic_notation
             
 
-    def _calculate_distance(self) -> float:
+    def _calculate_distance(self, distanceMatrix: np.ndarray) -> float:
         total_distance = 0.0
         penalty = 1e6  # High penalty for unreachable paths
 

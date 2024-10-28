@@ -4,8 +4,6 @@ from Initialisation import Initialisation
 from Parameters import Parameters
 from TravellingSalesMan import TravellingSalesMan
 
-global distanceMatrix
-distanceMatrix: np.ndarray = np.empty(0)
 # Modify the class name to match your student number.
 class r0799028:
 
@@ -21,12 +19,13 @@ class r0799028:
 
 		parameters = Parameters()
 
-		initialisation = Initialisation(parameters.get_population_size())
-		population = initialisation.get_initial_population()
+		initialisation = Initialisation(parameters.get_population_size(), distanceMatrix)
+		population = initialisation.get_initial_population(distanceMatrix)
+
 		for individual in population.get():
 			print(f"Route: {individual.get_cyclic_representation()}, Distance: {individual.get_distance()}")
 
-		tsm = TravellingSalesMan( parameters)
+		tsm = TravellingSalesMan( parameters, distanceMatrix)
 
 		yourConvergenceTestsHere = True
 		while( yourConvergenceTestsHere ):
