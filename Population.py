@@ -20,7 +20,7 @@ class Population():
             individual.get_distance()
         self._population.append(individual)
     
-    def add_individuals(self, individuals: Iterable[Individual], distance_matrix: np.ndarray) -> None:
+    def add_individuals(self, individuals: Iterable[Individual]) -> None:
         self._population.extend(individuals)
     
     def remove_individual(self, individual: Individual) -> None:

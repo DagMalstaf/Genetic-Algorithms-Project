@@ -3,10 +3,9 @@ from copy import deepcopy
 import numpy as np
 from Debug import Debug
 from Exceptions import CyclicNotationException
+from main import distanceMatrix
 
 class Individual():
-
-    _distance_matrix: np.ndarray = np.empty(0)
     _representation : np.ndarray 
     _distance: float = 0.0
 
@@ -49,14 +48,12 @@ class Individual():
         return tmp
 
 
-    def use_cyclic_notation(self, cyclic_notation: np.ndarray, distance_matrix: np.ndarray) -> None:
-        self._distance_matrix = distance_matrix if self._distance_matrix.size == 0 else self._distance_matrix
+    def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
         self._representation = cyclic_notation
         self._calculate_distance()
 
-    def use_path_notation(self, path_notation: np.ndarray, distance_matrix: np.ndarray) -> None:
-        self._distance_matrix = distance_matrix if self._distance_matrix.size == 0 else self._distance_matrix
-        self._representation = self._build_cyclic_notation_from_path(path_notation)
+    def use_path_notation(self, path_notation: np.ndarray) -> None:
+        self._build_cyclic_notation_from_path(path_notation)
         self._calculate_distance()
 
     def _build_cyclic_notation_from_path(self, path_notation: np.ndarray) -> np.ndarray:
@@ -80,7 +77,7 @@ class Individual():
 
         for city in range(len(self._representation)):
             city_distance_matrix_index = self._representation[city]
-            total_distance += self._distance_matrix[city, city_distance_matrix_index] if self._distance_matrix[city, city_distance_matrix_index] != float('inf') else penalty
+            total_distance += distanceMatrix[city, city_distance_matrix_index] if distanceMatrix[city, city_distance_matrix_index] != float('inf') else penalty
 
         self._distance = total_distance
         return self._distance
