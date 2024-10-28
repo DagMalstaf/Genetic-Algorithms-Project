@@ -32,6 +32,9 @@ class Individual():
     def __getitem__(self, index: int) -> int:
         return self._representation[index]
     
+    def __hash__(self):
+        return hash(self._representation)
+    
     @property
     def size(self) -> int:
         return len(self._representation)
