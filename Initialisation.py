@@ -6,7 +6,7 @@ from Population import Population
 
 class Initialisation():
 
-    _matrix: np.ndarray = None # np.ndarray() can't use this because size is unknown at compile time
+    _matrix: np.ndarray
     _population_size: int = -1
     _number_of_cities: int = -1
 

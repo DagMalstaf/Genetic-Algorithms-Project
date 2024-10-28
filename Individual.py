@@ -4,7 +4,7 @@ import numpy as np
 
 class Individual():
 
-    _distance_matrix: np.ndarray = np.ndarray()
+    _distance_matrix: np.ndarray = np.empty(0)
     _representation : np.ndarray 
     _distance: float = 0.0
 
@@ -25,24 +25,26 @@ class Individual():
             return NotImplemented
         return self._distance > other._distance
 
+    def use_cyclic_notation(self, cyclic_notation: np.ndarray, distance_matrix: np.ndarray) -> None:
         self._distance_matrix = distance_matrix if self._distance_matrix is None else print("Distance matrix already defined")
-    def use_cyclic_notation(self, cyclic_notation: List[int], distance_matrix: np.ndarray) -> None:
         self._representation = cyclic_notation
-        self._calculate_distance(distance_matrix)
+        self._calculate_distance()
 
-    def use_path_notation(self, path_notation: List[int], distance_matrix: np.ndarray) -> None:
+    def use_path_notation(self, path_notation: np.ndarray, distance_matrix: np.ndarray) -> None:
         self._distance_matrix = distance_matrix if self._distance_matrix is None else print("Distance matrix already defined")
         self._representation = self._build_cyclic_notation_from_path(path_notation)
-        self._calculate_distance(distance_matrix)
+        self._calculate_distance()
 
-    def _build_cyclic_notation_from_path(self, path_notation: List[int]):
+    def _build_cyclic_notation_from_path(self, path_notation: np.ndarray) -> np.ndarray:
 
         cyclic_notation: List[int] = [-1]*len(path_notation)
 
         for city_posittion_in_path, city in enumerate(path_notation):
             cyclic_notation[path_notation[city_posittion_in_path-1]] = city
 
-        if Debug:
+        # if Debug:
+        #     pass
+        return cyclic_notation
             
 
     def _calculate_distance(self) -> float:
