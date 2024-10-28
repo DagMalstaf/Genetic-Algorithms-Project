@@ -1,5 +1,5 @@
 from Individual import Individual
-from typing import List, Iterable
+from typing import List, Iterable, Set
 import numpy as np
 
 class Population():
@@ -13,7 +13,13 @@ class Population():
     def get(self) -> List[Individual]:
         return self._population
     
-    def get_original_population_size(self) -> int:
+    def __iter__(self):
+        return self
+    def __next__(self):
+    
+        pass
+    def get_population_size(self) -> int:
+    
         return self._population_size
     
     def get_current_population_size(self) -> int:

@@ -6,20 +6,20 @@ from typing import List, Tuple
 
 class Selection:
     def __init__(self, k: int) -> None:
-        self.k = k
-        self.selection_function = min
+        self._k = k
+        self._selection_function = max
 
-    def select_amt(self, population: Population, num_pairs: int) -> List[Tuple[Individual, Individual]]:
+    # def select_amt(self, population: Population, num_pairs: int) -> List[Tuple[Individual, Individual]]:
 
-        selected_pairs = []
-        for _ in range(num_pairs):
-            parent1 = EvolutionaryFunctions.k_tournament(population, self.k, self.selection_function)
-            parent2 = EvolutionaryFunctions.k_tournament(population, self.k, self.selection_function)
-            selected_pairs.append((parent1, parent2))
-        return selected_pairs
+    #     selected_pairs = []
+    #     for _ in range(num_pairs):
+    #         parent1 = EvolutionaryFunctions.k_tournament(population, self.k, self.selection_function)
+    #         parent2 = EvolutionaryFunctions.k_tournament(population, self.k, self.selection_function)
+    #         selected_pairs.append((parent1, parent2))
+    #     return selected_pairs
     
     def select_pair(self, population: Population) -> Tuple[Individual, Individual]:
-        parent1 = EvolutionaryFunctions.k_tournament(population, self.k, self.selection_function)
-        parent2 = EvolutionaryFunctions.k_tournament(population, self.k, self.selection_function)
+        parent1 = EvolutionaryFunctions.k_tournament(population, self._k, self._selection_function)
+        parent2 = EvolutionaryFunctions.k_tournament(population, self._k, self._selection_function)
         return parent1, parent2
 
