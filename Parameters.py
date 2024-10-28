@@ -30,3 +30,6 @@ class Parameters:
     
     def get_k_elimination(self) -> int:
         return self._parameters_dict.get("k_elimination", 5)
+
+    def get_mutation_rate(self) -> float:
+        return self._parameters_dict.get("mutation_rate", 0.95)

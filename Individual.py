@@ -1,3 +1,5 @@
+import random
+from tkinter import NO
 from typing import List
 from copy import deepcopy
 import numpy as np
@@ -46,13 +48,11 @@ class Individual():
         self._current_index = tmp
         return tmp
 
-    def use_cyclic_notation(self, cyclic_notation: np.ndarray, distanceMatrix: np.ndarray) -> None:
+    def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
         self._representation = cyclic_notation
-        self._calculate_distance(distanceMatrix)
 
-    def use_path_notation(self, path_notation: np.ndarray, distanceMatrix: np.ndarray) -> None:
+    def use_path_notation(self, path_notation: np.ndarray) -> None:
         self._build_cyclic_notation_from_path(path_notation)
-        self._calculate_distance(distanceMatrix)
 
     def _build_cyclic_notation_from_path(self, path_notation: np.ndarray) -> np.ndarray:
 
@@ -87,12 +87,8 @@ class Individual():
     def get_distance(self) -> float:
         return self._distance
 
-    
-
-
-    #Iterator along route
-
-    #'Iterator' builder 
-
-    
-
+    def mutate(self) -> None:
+        max_idx = self.size -1
+        idx1 = random.randint(0, max_idx)
+        idx2 = random.randint(0, max_idx)
+        self._representation[idx2], self._representation[idx1] = self._representation[idx1], self._representation[idx2]

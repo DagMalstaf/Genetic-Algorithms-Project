@@ -8,6 +8,8 @@ from TravellingSalesMan import TravellingSalesMan
 class r0799028:
 
 	def __init__(self):
+		filename = 'parameters.yaml'
+		self.parameters = Parameters(filename)	
 		self.reporter = Reporter.Reporter(self.__class__.__name__)
 
 	# The evolutionary algorithm's main loop
@@ -16,16 +18,14 @@ class r0799028:
 		file = open(filename)
 		distanceMatrix = np.loadtxt(file, delimiter=",")
 		file.close()
-		filename = 'parameters.yaml'
-		parameters = Parameters(filename)
-
-		initialisation = Initialisation(parameters.get_population_size(), distanceMatrix)
+	
+		initialisation = Initialisation(self.parameters.get_population_size(), distanceMatrix)
 		population = initialisation.get_initial_population(distanceMatrix)
 
 		for individual in population.get():
 			print(f"Route: {individual.get_cyclic_representation()}, Distance: {individual.get_distance()}")
 
-		tsm = TravellingSalesMan( parameters, distanceMatrix)
+		tsm = TravellingSalesMan(self.parameters, distanceMatrix)
 
 		yourConvergenceTestsHere = True
 		while( yourConvergenceTestsHere ):

@@ -13,7 +13,7 @@ class TravellingSalesMan():
         self.distanceMatrix = distanceMatrix
 
         self.selection = Selection(self.parameters.get_k_selection())
-        self.variation = Variation(self.parameters.get_offspring_size(), distanceMatrix)
+        self.variation = Variation(self.parameters.get_offspring_size(), self.parameters.get_mutation_rate())
         self.elimination = Elimination(self.parameters.get_k_elimination())
 
 
