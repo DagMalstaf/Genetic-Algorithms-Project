@@ -33,8 +33,8 @@ class Population():
     def remove_individual(self, individual: Individual) -> None:
         self._population.remove(individual)
     
-    def get_objective_values(self) -> List[float]:
-        return [individual.get_distance() for individual in self._population]
+    def get_objective_values(self, distance_matrix: np.ndarray) -> List[float]:
+        return [individual.get_distance(distance_matrix) for individual in self._population]
     
     def __getitem__(self, index: int|np.intp) -> Individual:
         return self._population[index]
