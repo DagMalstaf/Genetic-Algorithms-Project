@@ -35,6 +35,7 @@ class Variation():
 
         for city_parent1, city_parent2, city_child in zip(parent1, parent2, child):
             if city_child != -1: continue
+            
         return Individual()
         #TODO: recombination
 

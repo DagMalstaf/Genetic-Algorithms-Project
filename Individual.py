@@ -8,7 +8,7 @@ from Debug import Debug
 
 class Individual():
     _representation : np.ndarray 
-    _distance: float = 0.0
+    _distance: float = -1
 
     _current_index = 0
 
@@ -48,8 +48,8 @@ class Individual():
         self._current_index = tmp
         return tmp
 
-    def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
-        self._representation = cyclic_notation
+    def use_cyclic_notation(self, cyclic_notation: np.ndarray, distanceMatrix: np.ndarray) -> None:
+        self._representation = deepcopy(cyclic_notation)
 
     def use_path_notation(self, path_notation: np.ndarray) -> None:
         self._build_cyclic_notation_from_path(path_notation)
@@ -84,8 +84,9 @@ class Individual():
     def get_cyclic_representation(self) -> np.ndarray:
         return deepcopy(self._representation)
     
-    def get_distance(self) -> float:
-        return self._distance
+    def get_distance(self, distance_matrix: np.ndarray) -> float:
+        return self._distance if self._distance != -1 else self._calculate_distance(distance_matrix)
+    
 
     def mutate(self) -> None:
         max_idx = self.size -1

@@ -25,8 +25,6 @@ class Population():
         return len(self._population)
 
     def add_individual(self, individual: Individual) -> None:
-        if individual.get_distance() == 0.0:
-            individual.get_distance()
         self._population.append(individual)
     
     def add_individuals(self, individuals: Iterable[Individual]) -> None:
