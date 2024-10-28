@@ -16,8 +16,8 @@ class r0799028:
 		file = open(filename)
 		distanceMatrix = np.loadtxt(file, delimiter=",")
 		file.close()
-
-		parameters = Parameters()
+		filename = 'parameters.yaml'
+		parameters = Parameters(filename)
 
 		initialisation = Initialisation(parameters.get_population_size(), distanceMatrix)
 		population = initialisation.get_initial_population(distanceMatrix)

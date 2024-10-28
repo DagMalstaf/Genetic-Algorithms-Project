@@ -1,0 +1,6 @@
+population_size: 100
+offspring_size: 100
+offspring_per_recombination: 2
+k_selection: 5
+k_elimination: 100
+mutation_rate: 0.8
