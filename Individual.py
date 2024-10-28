@@ -37,7 +37,7 @@ class Individual():
     
     @property
     def size(self) -> int:
-        return len(self._representation)
+        return hash(self._representation.data)
     
 
     def __iter__(self):
