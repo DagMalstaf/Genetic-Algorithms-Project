@@ -2,12 +2,13 @@ from random import sample
 from typing import List, Callable, Optional
 from Individual import Individual
 from Population import Population
+import numpy as np
 
 
 class EvolutionaryFunctions():
 
    @staticmethod
-   def k_tournament(population: Population, k: int, selection_function: Callable[[List[Individual]], Individual]) -> Individual:
+   def k_tournament(population: Population, k: int, distance_matrix: np.ndarray, selection_function: Callable[[List[Individual]], Individual]) -> Individual:
         """
         Get k random individuals from the population, then select one according to a selection_fuction.
         examples selection_function: min(), max()
@@ -15,7 +16,7 @@ class EvolutionaryFunctions():
         if k > population.get_current_population_size():
             raise Exception()
         sampled_individuals = sample(population.get(), k)
-        func: Callable[[Individual], float]  = lambda individual: individual.get_distance()
+        func: Callable[[Individual], float]  = lambda individual: individual.get_distance(distance_matrix)
         individual = selection_function(sampled_individuals, **{"key": func})
         return individual
 

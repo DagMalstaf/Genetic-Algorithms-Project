@@ -23,14 +23,14 @@ class r0799028:
 		population = initialisation.get_initial_population(distanceMatrix)
 
 		for individual in population.get():
-			print(f"Route: {individual.get_cyclic_representation()}, Distance: {individual.get_distance()}")
+			print(f"Route: {individual.get_cyclic_representation()}, Distance: {individual.get_distance(distanceMatrix)}")
 
 		tsm = TravellingSalesMan(self.parameters, distanceMatrix)
 
 		yourConvergenceTestsHere = True
 		while( yourConvergenceTestsHere ):
 			# float, float, np.array
-			meanObjective, bestObjective, bestSolution = tsm.run(population)
+			meanObjective, bestObjective, bestSolution = tsm.run(distanceMatrix, population)
 
 			# Call the reporter with:
 			#  - the mean objective function value of the population

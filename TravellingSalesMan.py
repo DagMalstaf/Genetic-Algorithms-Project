@@ -17,20 +17,20 @@ class TravellingSalesMan():
         self.elimination = Elimination(self.parameters.get_k_elimination())
 
 
-    def run(self, population: Population) -> Tuple[float, float, np.ndarray]:
+    def run(self, distanceMatrix: np.ndarray, population: Population) -> Tuple[float, float, np.ndarray]:
         
         mu = self.parameters.get_offspring_size()
         amt_children = self.parameters.get_offspring_per_recombination()
         # mu/amt_children should be int
 
         for _ in range(int(mu/amt_children)):
-            parent1, parent2 = self.selection.select_pair(population)
-            offspring = self.variation.produce_offspring(parent1, parent2)
+            parent1, parent2 = self.selection.select_pair(distanceMatrix, population)
+            offspring = self.variation.produce_offspring(parent1, parent2, distanceMatrix)
             population.add_individuals(offspring)
         
         population = self.elimination.eliminate(population)
 
-        objective_values = population.get_objective_values()
+        objective_values = population.get_objective_values(distanceMatrix)
 
         best_index = np.argmin(objective_values)
         best_individual = population[best_index]
