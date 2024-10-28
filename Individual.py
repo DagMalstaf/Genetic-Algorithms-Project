@@ -37,7 +37,6 @@ class Individual():
         return len(self._representation)
     
 
-
     def __iter__(self):
         return self
     

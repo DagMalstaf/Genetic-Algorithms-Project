@@ -37,7 +37,7 @@ class TravellingSalesMan():
         best_objective = objective_values[best_index]
 
         return (
-            np.mean(objective_values),            
+            float(np.mean(objective_values)),            
             best_objective,                       
-            best_individual
+            best_individual.get_cyclic_representation()
         )
