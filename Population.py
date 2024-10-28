@@ -16,10 +16,9 @@ class Population():
     def __iter__(self):
         return self
     def __next__(self):
-    
         pass
-    def get_population_size(self) -> int:
-    
+
+    def get_original_population_size(self) -> int:
         return self._population_size
     
     def get_current_population_size(self) -> int:

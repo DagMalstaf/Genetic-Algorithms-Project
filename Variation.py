@@ -24,7 +24,7 @@ class Variation():
 
         child_cyclic_representation = np.where(parent1_cyclic_representation == parent2_cyclic_representation, parent1_cyclic_representation, np.full(length,-1))
         child = Individual()
-        child.use_cyclic_notation(child_cyclic_representation)
+        child.use_cyclic_notation(child_cyclic_representation, self.distanceMatrix)
 
         for city_parent1, city_parent2, city_child in zip(parent1, parent2, child):
             if city_child != -1: continue
