@@ -36,10 +36,10 @@ class Variation():
                 child_repr[i] = remaining_genes[idx]
                 idx += 1
 
-        child_repr = child_repr.tolist()
+   
 
         child = Individual()
-        child._representation = child_repr
+        child.use_cyclic_notation(child_repr)
         return child
 
     def mutation(self, individual: Individual) -> Individual:

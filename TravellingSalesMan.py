@@ -8,8 +8,7 @@ from Elimination import Elimination
 
 class TravellingSalesMan():
 
-    def __init__(self, matrix: np.ndarray, parameters: Parameters) -> None:
-        self.matrix = matrix
+    def __init__(self, parameters: Parameters) -> None:
         self.parameters = parameters
 
         self.selection = Selection(self.parameters.get_k_selection())
@@ -26,7 +25,7 @@ class TravellingSalesMan():
         for _ in range(int(mu/amt_children)):
             parent1, parent2 = self.selection.select_pair(population)
             offspring = self.variation.produce_offspring(parent1, parent2)
-            population.add_individuals(offspring, self.matrix)
+            population.add_individuals(offspring)
         
         population = self.elimination.eliminate(population)
 
@@ -41,3 +40,6 @@ class TravellingSalesMan():
             best_objective,                       
             best_individual.get_cyclic_representation()
         )
+    
+
+    
