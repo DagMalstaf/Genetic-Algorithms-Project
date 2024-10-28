@@ -12,10 +12,10 @@ class EvolutionaryFunctions():
         Get k random individuals from the population, then select one according to a selection_fuction.
         examples selection_function: min(), max()
         """
-        if k > population.get_population_size():
+        if k > population.get_current_population_size():
             raise Exception()
         sampled_individuals = sample(population.get(), k)
-        func: Callable[[Individual], float]  = lambda ind: ind.get_distance()
+        func: Callable[[Individual], float]  = lambda individual: individual.get_distance()
         individual = selection_function(sampled_individuals, **{"key": func})
         return individual
 

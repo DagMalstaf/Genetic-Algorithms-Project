@@ -14,7 +14,7 @@ class TravellingSalesMan():
 
         self.selection = Selection(self.parameters.get_k_selection())
         self.variation = Variation(self.parameters.get_offspring_size())
-        self.elimination = Elimination(self.parameters.get_offspring_size(), self.parameters.get_k_elimination())
+        self.elimination = Elimination(self.parameters.get_k_elimination())
 
 
     def run(self, population: Population) -> Tuple[float, float, np.ndarray]:

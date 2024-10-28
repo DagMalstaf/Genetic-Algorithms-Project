@@ -7,7 +7,7 @@ from typing import List, Tuple
 class Selection:
     def __init__(self, k: int) -> None:
         self.k = k
-        self.selection_function = max
+        self.selection_function = min
 
     def select_amt(self, population: Population, num_pairs: int) -> List[Tuple[Individual, Individual]]:
 

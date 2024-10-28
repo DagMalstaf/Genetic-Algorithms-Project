@@ -4,14 +4,13 @@ from EvolutionaryFunctions import EvolutionaryFunctions
 
 class Elimination():
 
-    def __init__(self, offspring_size: int, pick_k: int) -> None:
-        self.offspring_size = offspring_size
+    def __init__(self, pick_k: int) -> None:
         self.pick_k = pick_k
 
     def eliminate(self, population: Population) -> Population:
- 
-        for _ in range(self.offspring_size):
-            individual = EvolutionaryFunctions.k_tournament(population, self.pick_k, min)
+
+        while (population.get_current_population_size() != population.get_original_population_size()):
+            individual = EvolutionaryFunctions.k_tournament(population, self.pick_k, max)
             population.remove_individual(individual)
 
         return population
