@@ -15,9 +15,9 @@ class Population():
     def get_population_size(self) -> int:
         return self._population_size
 
-    def add_individual(self, individual: Individual, distance_matrix: np.ndarray) -> None:
+    def add_individual(self, individual: Individual) -> None:
         if individual.get_distance() == 0.0:
-            individual.calculate_distance(distance_matrix)
+            individual.get_distance()
         self._population.append(individual)
     
     def add_individuals(self, individuals: Iterable[Individual], distance_matrix: np.ndarray) -> None:
@@ -29,6 +29,6 @@ class Population():
     def get_objective_values(self) -> List[float]:
         return [individual.get_distance() for individual in self._population]
     
-    def __getitem__(self, index: int) -> Individual:
+    def __getitem__(self, index: int|np.intp) -> Individual:
         return self._population[index]
 

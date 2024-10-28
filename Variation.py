@@ -8,11 +8,11 @@ class Variation():
         self.offspring_size = offspring_size
 
     def produce_offspring(self, parent1: Individual, parent2: Individual) -> Set[Individual]:
-        offspring_list = []
+        offspring_list = set()
         for _ in range(self.offspring_size):
             child = self.recombination(parent1, parent2)
             mutated_child = self.mutation(child)
-            offspring_list.append(mutated_child)
+            offspring_list.add(mutated_child)
         return offspring_list
     
 

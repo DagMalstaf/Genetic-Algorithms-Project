@@ -1,5 +1,5 @@
 from random import sample
-from typing import List, Callable
+from typing import List, Callable, Optional
 from Individual import Individual
 from Population import Population
 
@@ -15,7 +15,8 @@ class EvolutionaryFunctions():
         if k > population.get_population_size():
             raise Exception()
         sampled_individuals = sample(population.get(), k)
-        individual = selection_function(sampled_individuals, key=lambda ind: ind.get_distance())
+        func: Callable[[Individual], float]  = lambda ind: ind.get_distance()
+        individual = selection_function(sampled_individuals, **{"key": func})
         return individual
 
     
