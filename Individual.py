@@ -4,6 +4,7 @@ import numpy as np
 
 class Individual():
 
+    _distance_matrix: np.ndarray = np.ndarray()
     _representation : np.ndarray 
     _distance: float = 0.0
 
@@ -24,38 +25,33 @@ class Individual():
             return NotImplemented
         return self._distance > other._distance
 
-    def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
+        self._distance_matrix = distance_matrix if self._distance_matrix is None else print("Distance matrix already defined")
+    def use_cyclic_notation(self, cyclic_notation: List[int], distance_matrix: np.ndarray) -> None:
         self._representation = cyclic_notation
+        self._calculate_distance(distance_matrix)
 
-    def use_path_notation(self, path_notation: np.ndarray, distance_matrix: np.ndarray) -> 'Individual':
-        self._representation = path_notation
-        self.calculate_distance(distance_matrix)
-        return self
+    def use_path_notation(self, path_notation: List[int], distance_matrix: np.ndarray) -> None:
+        self._distance_matrix = distance_matrix if self._distance_matrix is None else print("Distance matrix already defined")
+        self._representation = self._build_cyclic_notation_from_path(path_notation)
+        self._calculate_distance(distance_matrix)
 
-    def calculate_distance(self, distance_matrix: np.ndarray) -> float:
+    def _build_cyclic_notation_from_path(self, path_notation: List[int]):
+
+        cyclic_notation: List[int] = [-1]*len(path_notation)
+
+        for city_posittion_in_path, city in enumerate(path_notation):
+            cyclic_notation[path_notation[city_posittion_in_path-1]] = city
+
+        if Debug:
+            
+
+    def _calculate_distance(self) -> float:
         total_distance = 0.0
         penalty = 1e6  # High penalty for unreachable paths
-        n_cities = distance_matrix.shape[0]
 
-        for i in range(len(self._representation) - 1):
-            from_city = self._representation[i]
-            to_city = self._representation[i + 1]
-
-            if from_city >= n_cities or to_city >= n_cities:
-                raise ValueError(f"City index out of bounds: {from_city} or {to_city}")
-
-            distance = distance_matrix[from_city, to_city]
-            if distance == float('inf'):
-                total_distance += penalty  
-            else:
-                total_distance += distance
-
-        from_city = self._representation[-1]
-        to_city = self._representation[0]
-        if distance_matrix[from_city, to_city] == float('inf'):
-            total_distance += penalty
-        else:
-            total_distance += distance_matrix[from_city, to_city]
+        for city in range(len(self._representation)):
+            city_distance_matrix_index = self._representation[city]
+            total_distance += self._distance_matrix[city, city_distance_matrix_index] if self._distance_matrix[city, city_distance_matrix_index] != float('inf') else penalty
 
         self._distance = total_distance
         return self._distance
