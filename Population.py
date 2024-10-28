@@ -9,10 +9,6 @@ class Population():
     def __init__(self, population_size: int) -> None:
         self._population_size = population_size
 
-    @staticmethod
-    def recombination(inididual1: Individual, indvidual2: Individual) -> List[Individual]:
-        pass
-
     def get(self) -> List[Individual]:
         return self._population
     

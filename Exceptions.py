@@ -5,3 +5,6 @@ class PopulationSizeException(Exception):
 
 class TravellingSalesMatrixException(Exception):
     pass
+
+class CyclicNotationException(Exception):
+    pass

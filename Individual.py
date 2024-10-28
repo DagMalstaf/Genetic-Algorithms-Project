@@ -1,12 +1,16 @@
 from typing import List
 from copy import deepcopy
 import numpy as np
+from Debug import Debug
+from Exceptions import CyclicNotationException
 
 class Individual():
 
     _distance_matrix: np.ndarray = np.empty(0)
     _representation : np.ndarray 
     _distance: float = 0.0
+
+    _current_index = 0
 
     def __init__(self) -> None:
         self._representation = np.empty(0)
@@ -24,26 +28,47 @@ class Individual():
         if not isinstance(other, Individual):
             return NotImplemented
         return self._distance > other._distance
+    
+    def __getitem__(self, index: int) -> int:
+        return self._representation[index]
+    
+    @property
+    def size(self) -> int:
+        return len(self._representation)
+    
+
+
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        tmp = self._representation[self._current_index]
+        self._current_index = tmp
+        return tmp
+
 
     def use_cyclic_notation(self, cyclic_notation: np.ndarray, distance_matrix: np.ndarray) -> None:
-        self._distance_matrix = distance_matrix if self._distance_matrix is None else print("Distance matrix already defined")
+        self._distance_matrix = distance_matrix if self._distance_matrix.size == 0 else self._distance_matrix
         self._representation = cyclic_notation
         self._calculate_distance()
 
     def use_path_notation(self, path_notation: np.ndarray, distance_matrix: np.ndarray) -> None:
-        self._distance_matrix = distance_matrix if self._distance_matrix is None else print("Distance matrix already defined")
+        self._distance_matrix = distance_matrix if self._distance_matrix.size == 0 else self._distance_matrix
         self._representation = self._build_cyclic_notation_from_path(path_notation)
         self._calculate_distance()
 
     def _build_cyclic_notation_from_path(self, path_notation: np.ndarray) -> np.ndarray:
 
-        cyclic_notation: List[int] = [-1]*len(path_notation)
+        cyclic_notation: np.ndarray = np.full(len(path_notation), -1)
 
         for city_posittion_in_path, city in enumerate(path_notation):
             cyclic_notation[path_notation[city_posittion_in_path-1]] = city
 
-        # if Debug:
-        #     pass
+        if Debug:
+            if -1 in cyclic_notation: raise CyclicNotationException("Error in building cyclic notation")
+
+        self._representation = cyclic_notation
+       
         return cyclic_notation
             
 
@@ -59,18 +84,13 @@ class Individual():
         return self._distance
 
 
-    def get_cyclic_representation(self) -> List[int]:
+    def get_cyclic_representation(self) -> np.ndarray:
         return deepcopy(self._representation)
     
     def get_distance(self) -> float:
         return self._distance
+
     
-    @property
-    def size(self) -> int:
-        return len(self._representation)
-    
-    def __getitem__(self, index: int) -> int:
-        return self._representation[index]
 
 
     #Iterator along route
