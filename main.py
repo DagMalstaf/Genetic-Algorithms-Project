@@ -26,7 +26,7 @@ class r0799028:
 
 		tsm = TravellingSalesMan(distanceMatrix, parameters)
 
-		yourConvergenceTestsHere = False
+		yourConvergenceTestsHere = True
 		while( yourConvergenceTestsHere ):
 			# float, float, np.array
 			meanObjective, bestObjective, bestSolution = tsm.run(population)
