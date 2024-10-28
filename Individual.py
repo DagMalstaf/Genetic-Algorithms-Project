@@ -4,11 +4,11 @@ import numpy as np
 
 class Individual():
 
-    _representation : List[int] = list()
+    _representation : np.ndarray 
     _distance: float = 0.0
 
     def __init__(self) -> None:
-        self._representation = []
+        self._representation = np.empty(0)
         self._distance = 0.0
 
     def __repr__(self) -> str:
@@ -24,10 +24,10 @@ class Individual():
             return NotImplemented
         return self._distance > other._distance
 
-    def use_cyclic_notation(self, cyclic_notation: List[int]) -> None:
+    def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
         self._representation = cyclic_notation
 
-    def use_path_notation(self, path_notation: List[int], distance_matrix: np.ndarray) -> 'Individual':
+    def use_path_notation(self, path_notation: np.ndarray, distance_matrix: np.ndarray) -> 'Individual':
         self._representation = path_notation
         self.calculate_distance(distance_matrix)
         return self
