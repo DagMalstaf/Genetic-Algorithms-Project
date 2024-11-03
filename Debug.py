@@ -1,3 +1,3 @@
-import numpy as np
 
-Debug = True
+
+DEBUG = True

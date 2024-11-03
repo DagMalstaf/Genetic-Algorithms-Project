@@ -8,3 +8,12 @@ class TravellingSalesMatrixException(Exception):
 
 class CyclicNotationException(Exception):
     pass
+
+class RepresentationException(Exception):
+    pass
+
+class IndividualIteratorException(Exception):
+    pass
+
+class InvalidCityInput(Exception):
+    pass
