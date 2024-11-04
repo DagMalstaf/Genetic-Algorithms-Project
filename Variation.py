@@ -38,7 +38,8 @@ class Variation():
         child = Individual(parent1.get_number_of_cities())
         child.use_cyclic_notation(child_cyclic_representation)
         all_cities = np.arange(number_of_cities)
-        cities_left_to_allocate = np.where(not np.isin(all_cities,child_cyclic_representation), all_cities, base_case_no_city )
+        cities_left_to_allocate = np.where(~np.isin(all_cities,child_cyclic_representation), all_cities, base_case_no_city )
+            
 
         p_choice = np.random.random_sample()
         in_common_subpath = False
@@ -73,7 +74,7 @@ class Variation():
                   ):
         p_choice = np.random.random_sample()
         if DEBUG:
-            assert((cities_left_to_allocate == -1).all())
+            assert((cities_left_to_allocate == -1).any())
         #same city on same place in both parents
         if p_choice <= p_inherent_common_city_in_common_location \
             and city_parent1 == city_parent2:
