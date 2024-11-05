@@ -8,14 +8,14 @@ from Debug import DEBUG
 
 class Individual():
     _representation : np.ndarray 
-    _distance: float = -1
-    _NUMBER_OF_CITIES: int = -1
+    _distance: float
+    _NUMBER_OF_CITIES: int 
 
     _current_index = 0
     _counter: int = 0
     def __init__(self, number_of_cities:int) -> None:
         self._representation = np.empty(0)
-        self._distance = 0.0
+        self._distance = -1.0
         self._NUMBER_OF_CITIES = number_of_cities
 
     def __repr__(self) -> str:
@@ -56,7 +56,7 @@ class Individual():
         if DEBUG and city < 0:
             raise InvalidCityInput(f"Cities cannot be represented by a negative number. \n\t input: {city}")
         self._representation[self._current_index] = city
-
+    
     def use_cyclic_notation(self, cyclic_notation: np.ndarray) -> None:
         if (cyclic_notation.size != self._NUMBER_OF_CITIES): 
             raise RepresentationException(f"The representaion has the wrong size.\n\t NUMBER_OF_CITIES: {self._NUMBER_OF_CITIES}\n\t length representation: {len(cyclic_notation)}")

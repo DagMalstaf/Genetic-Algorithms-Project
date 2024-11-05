@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Set
+from typing import List, Set
 from Individual import Individual
 from Debug import DEBUG
 
@@ -37,27 +37,15 @@ class Variation():
         child_cyclic_representation = np.where(parent1_cyclic_representation == parent2_cyclic_representation, parent1_cyclic_representation, base_case_no_city)
         child = Individual(parent1.get_number_of_cities())
         child.use_cyclic_notation(child_cyclic_representation)
+        #start from 1 as the the beginning city should only be allocated last (additional constrain on beginning city)
         all_cities = np.arange(number_of_cities)
         cities_left_to_allocate = np.where(~np.isin(all_cities,child_cyclic_representation), all_cities, base_case_no_city )
-            
+        cities_left_to_allocate[0] = -1 #first city has no freedom in allocation, needs to be last
 
-        p_choice = np.random.random_sample()
-        in_common_subpath = False
-        for city_parent1, city_parent2, city_child in zip(parent1, parent2, child):
-            if city_child != -1:
-                if p_choice > p_inherent_common_path:
-                    child.iterator_set(self._get_city( city_parent1, city_parent2, cities_left_to_allocate,
-                                 p_inherent_common_city_in_common_location,
-                                 p_inherent_difference_city_in_common_location))
-                else: 
-                    in_common_subpath = True
-                    continue
-            if in_common_subpath:
-                in_common_subpath = False
-                p_choice = np.random.random_sample()
-            child.iterator_set(self._get_city( city_parent1, city_parent2, cities_left_to_allocate,
-                                 p_inherent_common_city_in_common_location,
-                                 p_inherent_difference_city_in_common_location))
+        self._build_hamiltonian_cycle_exposed(child, parent1, parent2, cities_left_to_allocate,
+                                                p_inherent_common_path,
+                                                p_inherent_common_city_in_common_location,
+                                                p_inherent_difference_city_in_common_location)
         if DEBUG:
             assert((cities_left_to_allocate == -1).all())
         return child
@@ -72,9 +60,11 @@ class Variation():
                   p_inherent_common_city_in_common_location: float,
                   p_inherent_difference_city_in_common_location: float
                   ):
+        # last city goes back to the start
+        if (cities_left_to_allocate == -1).all():
+            return 0
+        
         p_choice = np.random.random_sample()
-        if DEBUG:
-            assert((cities_left_to_allocate == -1).any())
         #same city on same place in both parents
         if p_choice <= p_inherent_common_city_in_common_location \
             and city_parent1 == city_parent2:
@@ -109,3 +99,26 @@ class Variation():
     def _select_choosen_city(self, city: int, cities_left_to_allocate: np.ndarray) -> int:
         cities_left_to_allocate[city] = -1
         return city
+    
+    def _build_hamiltonian_cycle_exposed(self, child: Individual, parent1: Individual, parent2: Individual, cities_left_to_allocate: np.ndarray,
+                                         p_inherent_common_path: float,
+                                         p_inherent_common_city_in_common_location: float,
+                                         p_inherent_difference_city_in_common_location: float
+                                         ) -> None:
+        p_choice = np.random.random_sample()
+        in_common_subpath = False
+        for city_parent1, city_parent2, city_child in zip(parent1, parent2, child):
+            if city_child != -1:
+                if p_choice > p_inherent_common_path:
+                    child.iterator_set(self._get_city( city_parent1, city_parent2, cities_left_to_allocate,
+                                 p_inherent_common_city_in_common_location,
+                                 p_inherent_difference_city_in_common_location))
+                else: 
+                    in_common_subpath = True
+                    continue
+            if in_common_subpath:
+                in_common_subpath = False
+                p_choice = np.random.random_sample()
+            child.iterator_set(self._get_city( city_parent1, city_parent2, cities_left_to_allocate,
+                                 p_inherent_common_city_in_common_location,
+                                 p_inherent_difference_city_in_common_location))
