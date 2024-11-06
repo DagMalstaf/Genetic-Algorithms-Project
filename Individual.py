@@ -12,9 +12,8 @@ class Individual():
     _NUMBER_OF_CITIES: int 
 
     _current_index = 0
-    _counter: int = 0
     def __init__(self, number_of_cities:int) -> None:
-        self._representation = np.empty(0)
+        self._representation :np.ndarray
         self._distance = -1.0
         self._NUMBER_OF_CITIES = number_of_cities
 
@@ -43,12 +42,14 @@ class Individual():
         return self._representation.size
     
     def __iter__(self):
+
         for counter in range(self._NUMBER_OF_CITIES):
             if DEBUG and counter != 0 and self._current_index == 0:
                 raise CyclicNotationException("This individual is not one cycle, we are back at the starting city before visiting all cities.")
             tmp = self._representation[self._current_index]
             yield tmp #city value can change during the iteration
             self._current_index = self._representation[self._current_index] # tmp is not guaranteed equal to self._representation[self._current_index] anymore
+        
         if DEBUG and self._current_index !=0:
                 raise CyclicNotationException("This individual is not one cycle, after passing through the cycle we are not at the first city.")
 
@@ -69,10 +70,10 @@ class Individual():
 
     def _build_cyclic_notation_from_path(self, path_notation: np.ndarray) -> np.ndarray:
 
-        cyclic_notation: np.ndarray = np.full(len(path_notation), -1)
+        cyclic_notation: np.ndarray = np.full(self._NUMBER_OF_CITIES, -1, dtype=  np.int16)
 
-        for city_posittion_in_path, city in enumerate(path_notation):
-            cyclic_notation[path_notation[city_posittion_in_path-1]] = city
+        for index_path in np.arange(1, self._NUMBER_OF_CITIES + 1, dtype= np.int16):
+            cyclic_notation[path_notation[index_path-1]] = path_notation[index_path % self._NUMBER_OF_CITIES]
 
         if DEBUG:
             if -1 in cyclic_notation: raise CyclicNotationException("Error in building cyclic notation")
@@ -103,8 +104,27 @@ class Individual():
     def get_number_of_cities(self)-> int:
         return self._NUMBER_OF_CITIES
 
-    def mutate(self) -> None:
-        max_idx = self.size -1
-        idx1 = random.randint(0, max_idx)
-        idx2 = random.randint(0, max_idx)
-        self._representation[idx2], self._representation[idx1] = self._representation[idx1], self._representation[idx2]
+    def mutate(self, positions_to_swap: int = 1) -> None:
+
+        start_mutate_point, first_swap, second_swap = self._swap_two_elements()
+        for _ in range(positions_to_swap - 1):
+            start_mutate_point, first_swap, second_swap = self._swap_two_elements(start_mutate_point, first_swap, second_swap)
+
+
+    def _swap_two_elements(self, 
+                           start_mutate_point: np.int16 = np.int16(-1), 
+                           first_swap: np.int16 = np.int16(-1),
+                           second_swap: np.int16 = np.int16(-1) ) -> tuple[np.int16, np.int16, np.int16]:
+        if DEBUG and not all([start_mutate_point == -1, first_swap == -1, second_swap ==- 1]) :
+            raise ValueError("Invalid parameters")
+        if start_mutate_point == -1:
+            start_mutate_point = np.random.choice(self._representation)
+            first_swap = self._representation[start_mutate_point]
+            second_swap = self._representation[first_swap]
+
+        final_mutate_point = self._representation[second_swap]
+
+        self._representation[start_mutate_point] = second_swap
+        self._representation[first_swap] = final_mutate_point
+        self._representation[second_swap] = first_swap
+        return second_swap, first_swap, final_mutate_point

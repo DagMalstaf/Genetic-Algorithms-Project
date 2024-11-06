@@ -23,7 +23,9 @@ class Initialisation():
     def get_initial_population(self, distanceMatrix: np.ndarray) -> Population:
         population = Population(self._population_size)
         for _ in range(self._population_size):
-            candidate_solution = np.random.choice(self._number_of_cities, size=self._number_of_cities, replace=False) # np.random.choice(self._number_of_cities, size=self._number_of_cities, replace=False, p=None)
+            candidate_solution = np.empty(self._number_of_cities, dtype=np.int16)
+            candidate_solution[0] = 0
+            candidate_solution[1:] = np.random.permutation(np.arange(1,self._number_of_cities, dtype= np.uint16))
             individual = Individual(self._number_of_cities)
             individual.use_path_notation(candidate_solution)
             population.add_individual(individual)
