@@ -19,11 +19,9 @@ class TravellingSalesMan():
 
     def run(self, distanceMatrix: np.ndarray, population: Population) -> Tuple[float, float, np.ndarray]:
         
-        mu = self.parameters.get_offspring_size()
-        amt_children = self.parameters.get_offspring_per_recombination()
         # mu/amt_children should be int
 
-        for _ in range(int(mu/amt_children)):
+        while population.size < self.parameters.get_population_size() + self.parameters.get_offspring_size() :
             parent1, parent2 = self.selection.select_pair(distanceMatrix, population)
             offspring = self.variation.produce_offspring(parent1, parent2, distanceMatrix)
             population.add_individuals(offspring)

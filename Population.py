@@ -18,6 +18,10 @@ class Population():
     def __next__(self):
         pass
 
+    @property
+    def size(self) -> int:
+        return self._population_size
+
     def get_original_population_size(self) -> int:
         return self._population_size
     
