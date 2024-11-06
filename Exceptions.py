@@ -17,3 +17,6 @@ class IndividualIteratorException(Exception):
 
 class InvalidCityInput(Exception):
     pass
+
+class SubPathError(Exception):
+    pass

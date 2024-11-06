@@ -7,7 +7,7 @@ import numpy as np
 class Selection:
     def __init__(self, k: int) -> None:
         self._k = k
-        self._selection_function = max
+        self._selection_function = min
 
     # def select_amt(self, population: Population, num_pairs: int) -> List[Tuple[Individual, Individual]]:
 

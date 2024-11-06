@@ -1,5 +1,5 @@
 import numpy as np
-from typing import List, Set
+from typing import Callable, List, Set
 from Individual import Individual
 from Debug import DEBUG
 from itertools import zip_longest
@@ -16,14 +16,21 @@ class Variation():
         self._offspring_size = offspring_size
         self._mutation_rate = mutation_rate
 
-    def produce_offspring(self, parent1: Individual, parent2: Individual, distanceMatrix: np.ndarray) -> Set[Individual]:
-        offspring_list = set()
+    def produce_offspring(self, parent1: Individual, parent2: Individual, distanceMatrix: np.ndarray) -> List[Individual]:
+        offspring_list = list()
+        if parent1 == parent2:
+            return list()
         for _ in range(self._offspring_size):
             child = self._recombination(parent1, parent2, distanceMatrix)
             mutated_child = self._mutation(child)
-            offspring_list.add(mutated_child)
+            offspring_list.append(mutated_child)
         return offspring_list
     
+    def _find_first_non_zero(self,array: np.ndarray, comparison_operator: Callable[[int], bool]) -> int:
+
+        for index, value in np.ndenumerate(array):
+            if comparison_operator(value): return index[0]
+        return -1
 
     def _recombination(self, parent1: Individual, parent2: Individual, distanceMatrix: np.ndarray,
                         p_inherent_common_path: float = 1, 
@@ -32,18 +39,25 @@ class Variation():
                         ) -> Individual:
         parent1_cyclic_representation = parent1.get_cyclic_representation()
         parent2_cyclic_representation = parent2.get_cyclic_representation()
-        number_of_cities = len(parent1_cyclic_representation) #change to call to parent1
+        number_of_cities = parent1.get_number_of_cities()
 
         base_case_no_city = np.full(number_of_cities,-1)
         child_cyclic_representation = np.where(parent1_cyclic_representation == parent2_cyclic_representation, parent1_cyclic_representation, base_case_no_city)
-        child = Individual(parent1.get_number_of_cities())
+        child = Individual(number_of_cities)
         child.use_cyclic_notation(child_cyclic_representation)
         #start from 1 as the the beginning city should only be allocated last (additional constrain on beginning city)
         all_cities = np.arange(number_of_cities)
         cities_left_to_allocate = np.where(~np.isin(all_cities,child_cyclic_representation), all_cities, base_case_no_city )
-        cities_left_to_allocate[0] = -1 #first city has no freedom in allocation, needs to be last
 
-        self._build_hamiltonian_cycle_exposed(child, parent1, parent2, cities_left_to_allocate,
+        #check for -1 when parents are identical match
+        start_city = self._find_first_non_zero(cities_left_to_allocate, lambda x: x != -1)
+        if start_city == -1:
+            debug = True
+            if parent1 == parent2:
+                debug2 = True
+        cities_left_to_allocate[start_city] = -1 
+
+        self._build_hamiltonian_cycle_exposed(start_city, child, parent1, parent2, cities_left_to_allocate,
                                                 p_inherent_common_path,
                                                 p_inherent_common_city_in_common_location,
                                                 p_inherent_difference_city_in_common_location)
@@ -57,13 +71,15 @@ class Variation():
         return individual
 
 
-    def _get_city(self, city_parent1: int, city_parent2: int, cities_left_to_allocate: np.ndarray, 
+    def _get_city(self, start_city: int, child: Individual, city_parent1: int, city_parent2: int, cities_left_to_allocate: np.ndarray, 
                   p_inherent_common_city_in_common_location: float,
                   p_inherent_difference_city_in_common_location: float
                   ):
         # last city goes back to the start
         if (cities_left_to_allocate == -1).all():
-            return 0
+            # if (np.count_nonzero(child.get_cyclic_representation() == -1) != 1):
+            #     debug = True
+            return start_city
         
         p_choice = np.random.random_sample()
         #same city on same place in both parents
@@ -102,25 +118,29 @@ class Variation():
     
     def _select_choosen_city(self, city: int, cities_left_to_allocate: np.ndarray) -> int:
         cities_left_to_allocate[city] = -1
+        if city == 0:
+            debug = True
         return city
     
-    def _build_hamiltonian_cycle_exposed(self, child: Individual, parent1: Individual, parent2: Individual, cities_left_to_allocate: np.ndarray,
+    def _build_hamiltonian_cycle_exposed(self,start_city: int, child: Individual, parent1: Individual, parent2: Individual, cities_left_to_allocate: np.ndarray,
                                          p_inherent_common_path: float,
                                          p_inherent_common_city_in_common_location: float,
                                          p_inherent_difference_city_in_common_location: float
                                          ) -> None:
+        
         p_choice = np.random.random_sample()
-        for city_parent1, city_parent2, city_child in zip_longest(parent1, parent2, child):
+
+        for city_parent1, city_parent2, city_child in zip_longest(parent1(start_city), parent2(start_city), child(start_city)):
             if city_child != -1:
                 if p_choice > p_inherent_common_path:
                     cities_left_to_allocate[city_child] = city_child
-                    child.iterator_set(self._get_city( city_parent1, city_parent2, cities_left_to_allocate,
+                    child.iterator_set(self._get_city(start_city, child, city_parent1, city_parent2, cities_left_to_allocate,
                                  p_inherent_common_city_in_common_location,
                                  p_inherent_difference_city_in_common_location))
                 else: 
                     continue
             p_choice = np.random.random_sample()
-            child.iterator_set(self._get_city(city_parent1, city_parent2, cities_left_to_allocate,
+            child.iterator_set(self._get_city(start_city, child, city_parent1, city_parent2, cities_left_to_allocate,
                                  p_inherent_common_city_in_common_location,
                                  p_inherent_difference_city_in_common_location))
 
